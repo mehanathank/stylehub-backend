@@ -153,10 +153,11 @@ connectDB().then(() => {
 
 // Keep Render free tier alive by pinging every 14 minutes
 if (process.env.NODE_ENV !== 'development') {
+  const https = require('https')
   setInterval(() => {
-    fetch(`https://stylehub-backend-6.onrender.com/health`)
-      .then(() => console.log('🏓 Keep-alive ping sent'))
-      .catch(() => {})
+    https.get('https://stylehub-backend-6.onrender.com/health', () => {
+      console.log('🏓 Keep-alive ping sent')
+    }).on('error', () => {})
   }, 14 * 60 * 1000)
 }
 
